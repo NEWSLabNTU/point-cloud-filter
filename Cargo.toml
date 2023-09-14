@@ -3,4 +3,5 @@ members = [
     "background-point-filter",
     "range-point-filter",
     "r2r-point-filter",
+    "filter-expr",
 ]

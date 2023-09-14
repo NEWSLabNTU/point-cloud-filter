@@ -1,0 +1,12 @@
+WHITESPACE = _{ " " | "\t" | NEWLINE }
+non_digit = _{ "_" | ASCII_ALPHA }
+ident = @{ !ASCII_DIGIT ~ (non_digit | ASCII_DIGIT)+ }
+
+bin_op = @{ "*" | "+" | "-" }
+unary_op = @{ "!" }
+
+subterm = { ident | "(" ~ expr ~ ")" }
+term = { unary_op? ~ subterm }
+expr = { term ~ (bin_op ~ term)* }
+
+lang = { SOI ~ expr ~ EOI }
