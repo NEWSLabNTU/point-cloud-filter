@@ -105,7 +105,7 @@ impl From<PlanarBoxFilter> for PlanarBoxFilterConfig {
 
 #[cfg(test)]
 mod tests {
-    use crate::{PlanarBoxFilter, PlanarBoxFilterConfig};
+    use crate::item::planar_box_filter::{PlanarBoxFilter, PlanarBoxFilterConfig};
     use nalgebra as na;
     use noisy_float::prelude::*;
     use std::ops::Bound::*;

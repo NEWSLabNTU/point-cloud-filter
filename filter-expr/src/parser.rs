@@ -339,7 +339,7 @@ impl BinOp {
 mod tests {
     use super::Lang;
     use super::{BinOp, Expr, Term};
-    use crate::expr::expr_parser::parse_filter_str;
+    use crate::parser::parse_filter_str;
 
     #[test]
     fn expr_parse() {
