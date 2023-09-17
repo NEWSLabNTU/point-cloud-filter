@@ -5,6 +5,7 @@ pub use config::*;
 use dashmap::DashMap;
 use nalgebra as na;
 use noisy_float::prelude::*;
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::sync::{
     atomic::{AtomicU64, Ordering::*},
     RwLock,
@@ -13,6 +14,26 @@ use std::sync::{
 #[derive(Debug)]
 pub struct BackgroundPointFilter {
     inner: RwLock<Inner>,
+}
+
+impl Serialize for BackgroundPointFilter {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let inner = self.inner.read().unwrap();
+        inner.config.serialize(serializer)
+    }
+}
+
+impl<'de> Deserialize<'de> for BackgroundPointFilter {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let config = config::Config::deserialize(deserializer)?;
+        Ok(Self::new(&config))
+    }
 }
 
 #[derive(Debug)]
