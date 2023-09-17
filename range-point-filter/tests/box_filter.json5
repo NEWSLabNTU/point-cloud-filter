@@ -1,0 +1,26 @@
+{
+    "program": "int * (box1 - box2)",
+    "items": {
+        "box1": {
+            "type": "box",
+            "xy": [3, 2],
+            "wh": [6, 4],
+            "z_min": 1,
+            "z_max": 4,
+            "azimuth_degrees": 0
+        },
+        "box2": {
+            "type": "box",
+            "xy": [3, 2],
+            "wh": [2, 3],
+            "z_min": 2,
+            "z_max": 3,
+            "azimuth_degrees": 90
+        },
+        "int" : {
+            "type": "intensity",
+            "min": 0.5,
+            "max": 2.5
+        }
+    }
+}

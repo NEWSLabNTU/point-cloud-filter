@@ -13,6 +13,8 @@ serde = { version = "1.0.152", features = ["derive"] }
 pest = "2.7.3"
 pest_derive = "2.7.3"
 anyhow = "1.0.75"
+itertools = "0.11.0"
+once_cell = "1.18.0"
 # common-types = { version = "0.1.0", path = "../common-types" }
 
 [dev-dependencies]

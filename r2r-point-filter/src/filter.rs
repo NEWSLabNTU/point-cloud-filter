@@ -5,7 +5,7 @@ use na::Point3;
 use nalgebra as na;
 use r2r::sensor_msgs::msg::PointCloud2;
 use r2r_msg_ext::sensor_msgs::msg::{PointCloud2Ext, PointCloud2NalgebraExt};
-use range_point_filter::PointFilter;
+use range_point_filter::FilterProgram as PointFilter;
 use std::ops::{Bound, RangeBounds};
 
 pub struct Filter {

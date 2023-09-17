@@ -1,8 +1,5 @@
-use anyhow::anyhow;
-use anyhow::bail;
-use anyhow::Result;
-use r2r::Node;
-use r2r::ParameterValue;
+use anyhow::{anyhow, bail, Result};
+use r2r::{Node, ParameterValue};
 use std::path::PathBuf;
 
 #[derive(Debug, Clone, PartialEq, Eq)]

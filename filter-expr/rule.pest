@@ -1,12 +1,15 @@
 WHITESPACE = _{ " " | "\t" | NEWLINE }
 non_digit = _{ "_" | ASCII_ALPHA }
 ident = @{ !ASCII_DIGIT ~ (non_digit | ASCII_DIGIT)+ }
+add = @{ "+" }
+sub = @{ "-" }
+mul = @{ "*" }
+invert = @{ "!" }
 
-bin_op = @{ "*" | "+" | "-" }
-unary_op = @{ "!" }
+bin_op = _{ add | sub | mul }
+unary_op = _{ invert }
 
-subterm = { ident | "(" ~ expr ~ ")" }
-term = { unary_op? ~ subterm }
-expr = { term ~ (bin_op ~ term)* }
+expr = { term ~ ( bin_op ~ term )* }
+term = _{ unary_op? ~ ident | unary_op? ~ "(" ~ expr ~ ")" }
 
-lang = { SOI ~ expr ~ EOI }
+program = { SOI ~ expr ~ EOI }

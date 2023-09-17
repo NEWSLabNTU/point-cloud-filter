@@ -4,27 +4,22 @@ mod gui;
 mod params;
 mod utils;
 
-use crate::config::Config;
-use crate::filter::Filter;
-use crate::gui::Gui;
-use anyhow::anyhow;
-use anyhow::Result;
+use crate::{config::Config, filter::Filter, gui::Gui};
+use anyhow::{anyhow, Result};
 use clap::Parser;
-use futures::Stream;
-use futures::StreamExt;
+use futures::{Stream, StreamExt};
 use gui::GuiMsg;
-use kiss3d::light::Light;
-use kiss3d::window::Window;
+use kiss3d::{light::Light, window::Window};
 use nalgebra as na;
 use params::Params;
-use r2r::log_error;
-use r2r::Publisher;
-use r2r::{geometry_msgs::msg::TransformStamped, sensor_msgs::msg::PointCloud2, QosProfile};
-use r2r_msg_ext::geometry_msgs::msg::TransformStampedNalgebraExt;
-use r2r_msg_ext::sensor_msgs::msg::PointCloud2NalgebraExt;
-use std::fs;
-use std::path::PathBuf;
-use std::time::Duration;
+use r2r::{
+    geometry_msgs::msg::TransformStamped, log_error, sensor_msgs::msg::PointCloud2, Publisher,
+    QosProfile,
+};
+use r2r_msg_ext::{
+    geometry_msgs::msg::TransformStampedNalgebraExt, sensor_msgs::msg::PointCloud2NalgebraExt,
+};
+use std::{fs, path::PathBuf, time::Duration};
 use tokio::runtime::Runtime;
 
 #[derive(Debug, Clone, Parser)]

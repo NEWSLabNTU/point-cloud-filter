@@ -1,8 +1,6 @@
 use serde::{Deserialize, Serialize};
 use std::ops::Bound;
 
-
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, serde_semver::SemverReq)]
 #[version("0.3.0")]
 pub struct Version;
@@ -16,6 +14,5 @@ pub struct Config {
     #[serde(with = "crate::utils::serde_option_bound", default)]
     pub lidar_distance_bound: Option<(Bound<f32>, Bound<f32>)>,
     pub background_point_filter: Option<background_point_filter::Config>,
-    pub range_filter_rules: Option<range_point_filter::PointFilter>,
+    pub range_filter_rules: Option<range_point_filter::FilterProgram>,
 }
-
