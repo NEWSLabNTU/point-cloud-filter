@@ -2,8 +2,9 @@ mod config;
 mod utils;
 pub use config::*;
 
+use config::Config;
 use dashmap::DashMap;
-use nalgebra as na;
+use nalgebra::Point3;
 use noisy_float::prelude::*;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::sync::{
@@ -13,6 +14,7 @@ use std::sync::{
 
 #[derive(Debug)]
 pub struct BackgroundPointFilter {
+    config: Config,
     inner: RwLock<Inner>,
 }
 
@@ -20,6 +22,7 @@ impl Clone for BackgroundPointFilter {
     fn clone(&self) -> Self {
         let inner = self.inner.read().unwrap();
         Self {
+            config: self.config.clone(),
             inner: RwLock::new(inner.clone()),
         }
     }
@@ -30,8 +33,7 @@ impl Serialize for BackgroundPointFilter {
     where
         S: Serializer,
     {
-        let inner = self.inner.read().unwrap();
-        inner.config.serialize(serializer)
+        self.config.serialize(serializer)
     }
 }
 
@@ -40,15 +42,14 @@ impl<'de> Deserialize<'de> for BackgroundPointFilter {
     where
         D: Deserializer<'de>,
     {
-        let config = config::Config::deserialize(deserializer)?;
+        let config = Config::deserialize(deserializer)?;
         Ok(Self::new(&config))
     }
 }
 
 #[derive(Debug, Clone)]
 pub struct Inner {
-    config: config::Config,
-    voxels: DashMap<(usize, usize, usize), Voxel>,
+    voxels: DashMap<[usize; 3], Voxel>,
     step: usize,
     mask: u64,
     threshold: u64,
@@ -73,10 +74,10 @@ impl Clone for Voxel {
 }
 
 impl BackgroundPointFilter {
-    pub fn new(config: &config::Config) -> Self {
+    pub fn new(config: &Config) -> Self {
         Self {
+            config: config.clone(),
             inner: RwLock::new(Inner {
-                config: config.clone(),
                 voxels: DashMap::new(),
                 step: 0,
                 mask: 1,
@@ -86,17 +87,17 @@ impl BackgroundPointFilter {
     }
 
     pub fn step(&self) {
+        let background_threshold = self.config.background_threshold.raw();
         let Inner {
             step,
             threshold,
-            config,
             mask,
             voxels,
             ..
         } = &mut *self.inner.write().unwrap();
 
         *step += 1;
-        *threshold = (*step as f64 * config.background_threshold.raw()).ceil() as u64;
+        *threshold = (*step as f64 * background_threshold).ceil() as u64;
 
         if *step % u64::BITS as usize == 0 {
             voxels.iter().for_each(|entry| {
@@ -110,24 +111,23 @@ impl BackgroundPointFilter {
         }
     }
 
-    pub fn check_is_background(&self, point: &na::Point3<f64>) -> bool {
-        let Inner {
-            config:
-                config::Config {
-                    range:
-                        config::Range {
-                            ref x_bound,
-                            ref y_bound,
-                            ref z_bound,
-                        },
-                    voxel_size:
-                        config::VoxelSize {
-                            x_size,
-                            y_size,
-                            z_size,
-                        },
-                    ..
+    pub fn check_is_background(&self, point: &Point3<f64>) -> bool {
+        let Config {
+            range:
+                config::Range {
+                    ref x_bound,
+                    ref y_bound,
+                    ref z_bound,
                 },
+            voxel_size:
+                config::VoxelSize {
+                    x_size,
+                    y_size,
+                    z_size,
+                },
+            ..
+        } = self.config;
+        let Inner {
             ref voxels,
             mask,
             threshold,
@@ -141,16 +141,14 @@ impl BackgroundPointFilter {
             return true;
         }
 
-        let x_idx = ((px - x_bound.start().raw()) / x_size.raw()).floor() as usize;
-        let y_idx = ((py - y_bound.start().raw()) / y_size.raw()).floor() as usize;
-        let z_idx = ((pz - z_bound.start().raw()) / z_size.raw()).floor() as usize;
-        let index = (x_idx, y_idx, z_idx);
-
-        use dashmap::mapref::entry::Entry as E;
-        let entry = match voxels.entry(index) {
-            E::Occupied(entry) => entry.into_ref(),
-            E::Vacant(entry) => entry.insert(Voxel::default()),
+        let index = {
+            let x_idx = ((px - x_bound.start().raw()) / x_size.raw()).floor() as usize;
+            let y_idx = ((py - y_bound.start().raw()) / y_size.raw()).floor() as usize;
+            let z_idx = ((pz - z_bound.start().raw()) / z_size.raw()).floor() as usize;
+            [x_idx, y_idx, z_idx]
         };
+
+        let entry = voxels.entry(index).or_insert_with(Voxel::default);
         let Voxel { count, bits } = entry.value();
         let bits = bits.fetch_or(mask, Relaxed);
         let total_count = count.load(Relaxed) + bits.count_ones() as u64;
@@ -161,27 +159,30 @@ impl BackgroundPointFilter {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
+    use crate::BackgroundPointFilter;
+    use nalgebra::Point3;
 
     #[test]
     fn background_filter_test() {
-        let filter = config::Config {
-            range: config::Range {
-                x_bound: (r64(-4.5)..=r64(4.5)),
-                y_bound: (r64(-4.5)..=r64(4.5)),
-                z_bound: (r64(-4.5)..=r64(4.5)),
-            },
-            voxel_size: config::VoxelSize {
-                x_size: r64(1.0),
-                y_size: r64(1.0),
-                z_size: r64(1.0),
-            },
-            background_threshold: r64(0.8),
-        }
-        .build();
-        let point1 = na::Point3::origin();
-        let point2 = na::Point3::new(-4.3, 0.0, 0.0);
-        let point3 = na::Point3::new(100.0, 0.0, 0.0);
+        let config = r#"
+{
+    "range": {
+        "x_bound": [-4.5, 4.5],
+        "y_bound": [-4.5, 4.5],
+        "z_bound": [-4.5, 4.5]
+    },
+    "voxel_size": {
+        "x_size": 1.0,
+        "y_size": 1.0,
+        "z_size": 1.0
+    },
+    "background_threshold": 0.8
+}
+"#;
+        let filter: BackgroundPointFilter = serde_json::from_str(config).unwrap();
+        let point1 = Point3::origin();
+        let point2 = Point3::new(-4.3, 0.0, 0.0);
+        let point3 = Point3::new(100.0, 0.0, 0.0);
 
         assert!(filter.check_is_background(&point1));
         assert!(filter.check_is_background(&point2));
