@@ -16,6 +16,15 @@ pub struct BackgroundPointFilter {
     inner: RwLock<Inner>,
 }
 
+impl Clone for BackgroundPointFilter {
+    fn clone(&self) -> Self {
+        let inner = self.inner.read().unwrap();
+        Self {
+            inner: RwLock::new(inner.clone()),
+        }
+    }
+}
+
 impl Serialize for BackgroundPointFilter {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
@@ -36,7 +45,7 @@ impl<'de> Deserialize<'de> for BackgroundPointFilter {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Inner {
     config: config::Config,
     voxels: DashMap<(usize, usize, usize), Voxel>,
@@ -49,6 +58,18 @@ pub struct Inner {
 struct Voxel {
     bits: AtomicU64,
     count: AtomicU64,
+}
+
+impl Clone for Voxel {
+    fn clone(&self) -> Self {
+        let Self { bits, count } = self;
+        let bits = bits.load(Acquire);
+        let count = count.load(Acquire);
+        Self {
+            bits: AtomicU64::new(bits),
+            count: AtomicU64::new(count),
+        }
+    }
 }
 
 impl BackgroundPointFilter {
