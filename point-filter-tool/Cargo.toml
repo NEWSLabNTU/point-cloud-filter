@@ -1,52 +1,42 @@
 [package]
-name = "r2r-point-filter-2"
+name = "point-filter-tool"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serde-loader = { version = "0.1.4", features = ["json5"] }
 anyhow = "1.0.69"
 background-point-filter = { version = "0.1.0", path = "../background-point-filter" }
-concurrent-slice = "0.1.0"
 flume = "0.10.14"
-futures = "0.3.26"
-iterator-ext = "0.2.1"
 itertools = "0.10.5"
 kiss3d = "0.35.0"
 log = "0.4.17"
-nalgebra = "0.30.1"
 noisy_float = { version = "0.2.0", features = ["serde"] }
-num_cpus = "1.15.0"
-once_cell = "1.17.0"
-ownref = "0.3.1"
-palette = "0.6.1"
-par-stream = { version = "0.10.2", features = ["runtime-tokio"] }
 range-point-filter = { version = "0.1.0", path = "../range-point-filter", features = ["with-kiss3d"] }
 pretty_env_logger = "0.4.0"
-prost = "0.11.6"
 serde = { version = "1.0.152", features = ["derive"] }
-serde-semver = "0.2.1"
-tokio = { version = "1.25.0", features = ["rt-multi-thread"] }
-r2r = "0.7.5"
-# wayside-utils = { version = "0.1.1", path = "../../rust-lib/wayside-utils" }
 clap = { version = "4.4.1", features = ["derive"] }
-rayon = "1.7.0"
 json5 = "0.4.1"
 pcd-rs = {version ="0.10.0",features = ["derive"] }
-serde_json = "1.0.105"
+
+[dependencies.nalgebra_0-30]
+version = '0.30'
+package = 'nalgebra'
+
+[dependencies.nalgebra_0-32]
+version = '0.32'
+package = 'nalgebra'
 
 [dependencies.kiss3d-utils]
 version = "0.1.0"
 git = "https://github.com/jerry73204/kiss3d-utils.git"
 rev = "2cb2803c4e02d5dc103383f37ab2ca3d6c5f9591"
 
-[dependencies.r2r-msg-ext]
+[dependencies.newslab-serde-nalgebra]
 version = "0.1.0"
-git = "https://github.com/jerry73204/r2r-msg-ext.git"
-rev = "0c2dfb5019ea9b84769dc20b4ed017191e8b2a94"
-features = ["with-nalgebra"]
+git = "https://github.com/NEWSLabNTU/newslab-serde.git"
+rev = "a54833aa5f270ab384ba3dca2d7c3fa3eda7716b"
 
 [dev-dependencies]
 glob = "0.3.1"
