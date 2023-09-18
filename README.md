@@ -4,7 +4,7 @@ This project implements various kinds of point cloud filter written in
 Rust.
 
 
-- `background-point-filter`: Point cloud filter based on motion
+- `static-point-filter`: Point cloud filter based on motion
   statistics.
 - `range-point-filter`: Range-based point cloud filter using Boolean
   expressions.

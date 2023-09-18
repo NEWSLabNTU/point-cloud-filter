@@ -1,5 +1,5 @@
 [package]
-name = "background-point-filter"
+name = "static-point-filter"
 version = "0.1.0"
 edition = "2021"
 

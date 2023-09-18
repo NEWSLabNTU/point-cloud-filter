@@ -10,8 +10,8 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn build(&self) -> super::BackgroundPointFilter {
-        super::BackgroundPointFilter::new(self)
+    pub fn build(&self) -> super::StaticPointFilter {
+        super::StaticPointFilter::new(self)
     }
 }
 

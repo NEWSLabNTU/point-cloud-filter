@@ -1,0 +1,13 @@
+{
+    "range": {
+        "x_bound": [-4.5, 4.5],
+        "y_bound": [-4.5, 4.5],
+        "z_bound": [-4.5, 4.5]
+    },
+    "voxel_size": {
+        "x_size": 1.0,
+        "y_size": 1.0,
+        "z_size": 1.0
+    },
+    "background_threshold": 0.8
+}

@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.69"
-background-point-filter = { version = "0.1.0", path = "../background-point-filter" }
+static-point-filter = { version = "0.1.0", path = "../static-point-filter" }
 flume = "0.10.14"
 itertools = "0.10.5"
 kiss3d = "0.35.0"

@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "background-point-filter",
+    "static-point-filter",
     "range-point-filter",
     "point-filter-tool",
     "filter-expr",

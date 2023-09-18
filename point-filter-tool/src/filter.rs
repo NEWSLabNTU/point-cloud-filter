@@ -1,20 +1,15 @@
 use crate::config::{self, Config};
 use anyhow::Result;
-use background_point_filter::BackgroundPointFilter;
 use nalgebra_0_32::{coordinates::XYZ, Isometry3, Point3, Vector2};
 use range_point_filter::FilterProgram;
+use static_point_filter::StaticPointFilter;
 use std::ops::{Bound, RangeBounds, RangeInclusive};
 
 pub struct Filter {
-    // lidar_tf: Isometry3<f32>,
-    // ground_tf: Isometry3<f32>,
-    // ground_filter_range: Option<f32>,
-    // lidar_distance_bound: Option<Bound<f32>>,
-    // background_point_filter: Option<BackgroundPointFilter>,
     ground_filter: Option<GroundFilter>,
     lidar_filter: Option<LidarFilter>,
     range_filter: Option<FilterProgram>,
-    background_filter: Option<BackgroundPointFilter>,
+    background_filter: Option<StaticPointFilter>,
 }
 
 impl Filter {

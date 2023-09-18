@@ -13,12 +13,12 @@ use std::sync::{
 };
 
 #[derive(Debug)]
-pub struct BackgroundPointFilter {
+pub struct StaticPointFilter {
     config: Config,
     inner: RwLock<Inner>,
 }
 
-impl Clone for BackgroundPointFilter {
+impl Clone for StaticPointFilter {
     fn clone(&self) -> Self {
         let inner = self.inner.read().unwrap();
         Self {
@@ -28,7 +28,7 @@ impl Clone for BackgroundPointFilter {
     }
 }
 
-impl Serialize for BackgroundPointFilter {
+impl Serialize for StaticPointFilter {
     fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
     where
         S: Serializer,
@@ -37,7 +37,7 @@ impl Serialize for BackgroundPointFilter {
     }
 }
 
-impl<'de> Deserialize<'de> for BackgroundPointFilter {
+impl<'de> Deserialize<'de> for StaticPointFilter {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: Deserializer<'de>,
@@ -73,7 +73,7 @@ impl Clone for Voxel {
     }
 }
 
-impl BackgroundPointFilter {
+impl StaticPointFilter {
     pub fn new(config: &Config) -> Self {
         Self {
             config: config.clone(),
@@ -154,56 +154,5 @@ impl BackgroundPointFilter {
         let total_count = count.load(Relaxed) + bits.count_ones() as u64;
 
         total_count >= threshold
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use crate::BackgroundPointFilter;
-    use nalgebra::Point3;
-
-    #[test]
-    fn background_filter_test() {
-        let config = r#"
-{
-    "range": {
-        "x_bound": [-4.5, 4.5],
-        "y_bound": [-4.5, 4.5],
-        "z_bound": [-4.5, 4.5]
-    },
-    "voxel_size": {
-        "x_size": 1.0,
-        "y_size": 1.0,
-        "z_size": 1.0
-    },
-    "background_threshold": 0.8
-}
-"#;
-        let filter: BackgroundPointFilter = serde_json::from_str(config).unwrap();
-        let point1 = Point3::origin();
-        let point2 = Point3::new(-4.3, 0.0, 0.0);
-        let point3 = Point3::new(100.0, 0.0, 0.0);
-
-        assert!(filter.check_is_background(&point1));
-        assert!(filter.check_is_background(&point2));
-        assert!(filter.check_is_background(&point3));
-        filter.step();
-
-        for _ in 1..50 {
-            assert!(filter.check_is_background(&point1));
-            assert!(filter.check_is_background(&point2));
-            assert!(filter.check_is_background(&point3));
-            filter.step();
-        }
-
-        for _ in 50..65 {
-            assert!(filter.check_is_background(&point1));
-            assert!(filter.check_is_background(&point3));
-            filter.step();
-        }
-
-        assert!(filter.check_is_background(&point1));
-        assert!(!filter.check_is_background(&point2));
-        assert!(filter.check_is_background(&point3));
     }
 }

@@ -1,15 +1,15 @@
-use background_point_filter::BackgroundPointFilter;
 use nalgebra_0_32::Isometry3;
 use noisy_float::types::{N32, R32};
 use range_point_filter::FilterProgram;
 use serde::{Deserialize, Serialize};
+use static_point_filter::StaticPointFilter;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Config {
     pub ground_filter: Option<GroundFilter>,
     pub lidar_filter: Option<LidarFilter>,
     pub range_filter: Option<FilterProgram>,
-    pub background_filter: Option<BackgroundPointFilter>,
+    pub background_filter: Option<StaticPointFilter>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
