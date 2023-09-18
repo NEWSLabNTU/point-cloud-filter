@@ -16,9 +16,9 @@ use pcd_rs::{DataKind, PcdSerialize, WriterInit};
 use std::{fs, path::PathBuf};
 
 #[derive(Debug, Clone, Parser)]
-/// Point cloud processor.
+/// Point cloud filtering tool.
 struct Opts {
-    /// config file
+    /// Configuration file.
     #[clap(short = 'c', long)]
     pub config: PathBuf,
 

@@ -34,3 +34,17 @@ pub struct LidarFilter {
     /// The maximum effective distance from the LiDAR center.
     pub max_distance: Option<R32>,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Config;
+    use anyhow::Result;
+    use std::fs;
+
+    #[test]
+    fn load_config_file_test() -> Result<()> {
+        let text = fs::read_to_string("config/config.json5")?;
+        let _: Config = json5::from_str(&text)?;
+        Ok(())
+    }
+}

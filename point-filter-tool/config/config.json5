@@ -1,0 +1,56 @@
+{
+    "ground_filter": {
+        "transform": {
+            "translation": [0.0, 0.0, 0.0],
+            "rotation": ["0deg", "0deg", "0deg"]
+        },
+        "max_distance": 10.0
+    },
+    "lidar_filter": {
+        "transform": {
+            "translation": [0.0, 0.0, 0.0],
+            "rotation": ["0deg", "0deg", "0deg"]
+        },
+        "min_distance": 0.5,
+        "max_distance": 50
+    },
+    "range_filter": {
+        "program": "int * (box1 - box2)",
+        "items": {
+            "box1": {
+                "type": "box",
+                "xy": [3, 2],
+                "wh": [6, 4],
+                "z_min": 1,
+                "z_max": 4,
+                "azimuth_degrees": 0
+            },
+            "box2": {
+                "type": "box",
+                "xy": [3, 2],
+                "wh": [2, 3],
+                "z_min": 2,
+                "z_max": 3,
+                "azimuth_degrees": 90
+            },
+            "int" : {
+                "type": "intensity",
+                "min": 0.5,
+                "max": 2.5
+            }
+        }
+    },
+    "background_point_filter": {
+        "range": {
+            "x_bound": { "imin": -50, "imax": 50 },
+            "y_bound": { "imin": -50, "imax": 50 },
+            "z_bound": { "imin": -50, "imax": 50 }
+        },
+        "voxel_size": {
+            "x_size": 0.2,
+            "y_size": 0.2,
+            "z_size": 0.2
+        },
+        "background_threshold": 0.6
+    }
+}
