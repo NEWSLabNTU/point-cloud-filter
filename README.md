@@ -8,7 +8,6 @@ Rust.
   statistics.
 - `range-point-filter`: Range-based point cloud filter using Boolean
   expressions.
-- `r2r-point-filter`: The point filter as a ROS node.
 - `filter-expr`: Parses Boolean expression for point cloud filters.
 
 ## License
