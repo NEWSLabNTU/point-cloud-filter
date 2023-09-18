@@ -4,7 +4,7 @@ use filter_expr::{
     normal_form::{Dnf, Term},
     parser::{Expr, ExprBinOp, Ident, Program},
 };
-use nalgebra::Point3;
+use nalgebra_0_32::Point3;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 

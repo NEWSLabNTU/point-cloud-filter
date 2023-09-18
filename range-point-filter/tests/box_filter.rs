@@ -1,5 +1,5 @@
 use anyhow::Result;
-use nalgebra::Point3;
+use nalgebra_0_32::Point3;
 use range_point_filter::FilterProgram;
 use std::fs;
 

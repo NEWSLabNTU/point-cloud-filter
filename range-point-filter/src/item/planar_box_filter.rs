@@ -1,6 +1,6 @@
 use anyhow::ensure;
 use itertools::izip;
-use nalgebra::{
+use nalgebra_0_32::{
     coordinates::{XY, XYZ},
     Isometry2, Isometry3, Point2, Point3, Translation2, Translation3, UnitComplex, UnitQuaternion,
 };
@@ -156,8 +156,7 @@ impl From<PlanarBoxFilter> for PlanarBoxFilterConfig {
 #[cfg(test)]
 mod tests {
     use crate::item::planar_box_filter::PlanarBoxFilter;
-    use na::Point3;
-    use nalgebra as na;
+    use nalgebra_0_32::Point3;
 
     #[test]
     fn inclusive_box_filter_test() {

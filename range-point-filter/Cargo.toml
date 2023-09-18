@@ -11,13 +11,21 @@ serde-loader = { version = "0.1.4", features = ["json5"] }
 kiss3d = { version = "0.35.0", optional = true }
 kiss3d-utils = { version = "0.1.0", git = "https://github.com/jerry73204/kiss3d-utils.git", rev = "v0.1.0", optional = true }
 log = { version = "0.4.17", optional = true }
-nalgebra = "0.30.1"
 noisy_float = { version = "0.2.0", features = ["serde"] }
 serde = { version = "1.0.152", features = ["derive"] }
 anyhow = "1.0.75"
 filter-expr = { version = "0.1.0", path = "../filter-expr" }
 itertools = "0.11.0"
 # common-types = { version = "0.1.0", path = "../common-types" }
+
+[dependencies.nalgebra_0-30]
+version = '0.30'
+package = 'nalgebra'
+
+[dependencies.nalgebra_0-32]
+version = '0.32'
+package = 'nalgebra'
+
 
 [features]
 with-kiss3d = ["kiss3d", "kiss3d-utils", "log"]
