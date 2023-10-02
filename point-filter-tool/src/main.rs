@@ -37,14 +37,13 @@ struct Opts {
 
 fn main() -> Result<()> {
     let opts = Opts::parse();
-
     let config: Config = {
         let text = fs::read_to_string(&opts.config)?;
         json5::from_str(&text)?
     };
 
     let filter = Filter::new(&config);
-
+    
     fs::create_dir_all(&opts.output_dir)?;
     // Filter Config file format
 
@@ -56,6 +55,7 @@ fn main() -> Result<()> {
     };
 
     // Start the GUI window if requested.
+
     let mut gui_ctx = gui_rx.map(|gui_rx| {
         let state = Gui::new(&config, gui_rx);
         let mut window = Window::new(env! {"CARGO_BIN_NAME"});
@@ -64,7 +64,7 @@ fn main() -> Result<()> {
     });
 
     // TODO: Open a directory of .pcd files
-    let pcd_files = fs::read_dir(&opts.output_dir)?
+    let pcd_files = fs::read_dir(&opts.input_dir)?
         .map(|entry| -> Result<_> {
             let entry = entry?;
             let path = entry.path();
@@ -72,8 +72,7 @@ fn main() -> Result<()> {
             let Some(ext) = path.extension() else {
             return Ok(None);
         };
-
-            if ext != ".pcd" {
+            if ext != "pcd" {
                 eprintln!("ignore file {}", path.display());
                 return Ok(None);
             }
@@ -84,6 +83,7 @@ fn main() -> Result<()> {
 
     for input_path in pcd_files {
         let input_path = input_path?;
+        // dbg![&num];
         let reader = pcd_rs::DynReader::open(&input_path)?;
 
         let input_points: Vec<_> = reader

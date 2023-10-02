@@ -23,7 +23,8 @@ impl Filter {
 
         let lidar_filter = lidar_filter.as_ref().map(LidarFilter::new);
         let ground_filter = ground_filter.as_ref().map(GroundFilter::new);
-
+        //TODO
+        dbg![& background_filter];
         Self {
             ground_filter,
             lidar_filter,
@@ -36,6 +37,7 @@ impl Filter {
         type BoxIter<'a> = Box<dyn Iterator<Item = Point3<f32>> + Send + 'a>;
 
         let iter: BoxIter<'_> = Box::new(points.into_iter());
+        
 
         // Filter points by the distance to the lidar.
         let iter: BoxIter = if let Some(filter) = &self.lidar_filter {
@@ -72,22 +74,22 @@ impl Filter {
                     filter.check_is_background(&pt)
                 })
                 .collect();
-
+                
             filter.step();
             points
         } else {
+            
             iter.collect()
         };
 
         Ok(output_points)
     }
 }
-
+#[derive(Debug)]
 struct LidarFilter {
     transform: Isometry3<f32>,
     range: (Bound<f32>, Bound<f32>),
 }
-
 impl LidarFilter {
     pub fn new(config: &config::LidarFilter) -> Self {
         let config::LidarFilter {
@@ -114,12 +116,11 @@ impl LidarFilter {
         self.range.contains(&distance)
     }
 }
-
+#[derive(Debug)]
 struct GroundFilter {
     transform: Isometry3<f32>,
     range: RangeInclusive<f32>,
 }
-
 impl GroundFilter {
     pub fn new(config: &config::GroundFilter) -> Self {
         let config::GroundFilter {
