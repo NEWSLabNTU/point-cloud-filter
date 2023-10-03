@@ -20,11 +20,8 @@ impl Filter {
             range_filter,
             background_filter,
         } = config;
-
         let lidar_filter = lidar_filter.as_ref().map(LidarFilter::new);
         let ground_filter = ground_filter.as_ref().map(GroundFilter::new);
-        //TODO
-        dbg![& background_filter];
         Self {
             ground_filter,
             lidar_filter,
@@ -71,7 +68,7 @@ impl Filter {
             let points: Vec<_> = iter
                 .filter(|pt| {
                     let pt: Point3<f64> = nalgebra_0_32::convert_ref(pt);
-                    filter.check_is_background(&pt)
+                    !filter.check_is_background(&pt)
                 })
                 .collect();
                 
@@ -110,7 +107,7 @@ impl LidarFilter {
     }
 
     pub fn contains(&self, point: &Point3<f32>) -> bool {
-        let point = self.transform * point;
+        let point = self.transform.inverse() * point;
         let XYZ { x, y, .. } = *point;
         let distance = Vector2::new(x, y).norm();
         self.range.contains(&distance)
@@ -135,7 +132,7 @@ impl GroundFilter {
     }
 
     pub fn contains(&self, point: &Point3<f32>) -> bool {
-        let point = self.transform * point;
+        let point = self.transform.inverse() * point;
         let XYZ { x, y, z } = *point;
         let distance = Vector2::new(x, y).norm();
         z >= 0.0 && self.range.contains(&distance)

@@ -1,7 +1,7 @@
 {
   "ground_filter": {
       "transform": {
-          "translation": [0.0, 0.0, -1.5], //filter bug
+          "translation": [0.0, 0.0, -1.5], //ground coordinate  
           "rotation": ["0deg", "0deg", "0deg"]
       },
       "max_distance": 50.0
@@ -16,7 +16,7 @@
   },
   "range_filter": {
       // "program": "int * (box1 - box2)",
-      "program": "box1 - box2 + box3",
+      "program": "box1 - box2 + box3", //customize
       "items": {
           "box1": {
               "type": "box",
@@ -49,7 +49,7 @@
           // }
       }
   },
-  "background_filter": { //occupancy of voxel > threshold -> background
+  "background_filter": {  //occupancy of voxel > threshold -> background
       "range": {
           // "x_bound": { "imin": -50, "imax": 50 },
           // "y_bound": { "imin": -50, "imax": 50 },
