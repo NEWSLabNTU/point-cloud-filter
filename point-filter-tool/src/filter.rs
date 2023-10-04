@@ -34,7 +34,6 @@ impl Filter {
         type BoxIter<'a> = Box<dyn Iterator<Item = Point3<f32>> + Send + 'a>;
 
         let iter: BoxIter<'_> = Box::new(points.into_iter());
-        
 
         // Filter points by the distance to the lidar.
         let iter: BoxIter = if let Some(filter) = &self.lidar_filter {
@@ -71,11 +70,10 @@ impl Filter {
                     !filter.check_is_background(&pt)
                 })
                 .collect();
-                
+
             filter.step();
             points
         } else {
-            
             iter.collect()
         };
 

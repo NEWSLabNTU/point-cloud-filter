@@ -43,7 +43,7 @@ fn main() -> Result<()> {
     };
 
     let filter = Filter::new(&config);
-    
+
     fs::create_dir_all(&opts.output_dir)?;
     // Filter Config file format
 
@@ -70,13 +70,11 @@ fn main() -> Result<()> {
             let path = entry.path();
 
             let Some(ext) = path.extension() else {
-            return Ok(None);
-        };
-            if ext != "pcd" {
-
                 return Ok(None);
             };
-
+            if ext != "pcd" {
+                return Ok(None);
+            };
 
             Ok(Some(path))
         })
