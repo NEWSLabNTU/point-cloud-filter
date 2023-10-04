@@ -70,9 +70,16 @@ fn main() -> Result<()> {
             let path = entry.path();
 
             let Some(ext) = path.extension() else {
+<<<<<<< HEAD
             return Ok(None);
         };
             if ext != "pcd" {
+=======
+                return Ok(None);
+            };
+
+            if ext != ".pcd" {
+>>>>>>> 07d15e99651c5677720ee7f1f55a42e1a908f252
                 eprintln!("ignore file {}", path.display());
                 return Ok(None);
             }
@@ -89,7 +96,7 @@ fn main() -> Result<()> {
         let input_points: Vec<_> = reader
             .map(|record| -> Result<_> {
                 let Some([x, y, z]) = record?.to_xyz() else {
-                    return Ok(None)
+                    return Ok(None);
                 };
                 let point = na::Point3::new(x, y, z);
                 Ok(Some(point))
