@@ -1,6 +1,5 @@
 mod config;
 mod utils;
-pub use config::*;
 
 use config::Config;
 use dashmap::DashMap;
