@@ -1,4 +1,5 @@
 [workspace]
+resolver = "2"
 members = [
     "static-point-filter",
     "range-point-filter",
