@@ -70,19 +70,13 @@ fn main() -> Result<()> {
             let path = entry.path();
 
             let Some(ext) = path.extension() else {
-<<<<<<< HEAD
             return Ok(None);
         };
             if ext != "pcd" {
-=======
+
                 return Ok(None);
             };
 
-            if ext != ".pcd" {
->>>>>>> 07d15e99651c5677720ee7f1f55a42e1a908f252
-                eprintln!("ignore file {}", path.display());
-                return Ok(None);
-            }
 
             Ok(Some(path))
         })
