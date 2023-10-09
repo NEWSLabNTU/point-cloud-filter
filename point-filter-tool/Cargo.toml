@@ -31,12 +31,11 @@ package = 'nalgebra'
 [dependencies.kiss3d-utils]
 version = "0.1.0"
 git = "https://github.com/jerry73204/kiss3d-utils.git"
-rev = "2cb2803c4e02d5dc103383f37ab2ca3d6c5f9591"
+rev = "v0.1.0"
 
 [dependencies.newslab-serde-nalgebra]
-version = "0.1.0"
 git = "https://github.com/NEWSLabNTU/newslab-serde.git"
-rev = "a54833aa5f270ab384ba3dca2d7c3fa3eda7716b"
+rev = "v0.1.0"
 
 [dev-dependencies]
 glob = "0.3.1"
