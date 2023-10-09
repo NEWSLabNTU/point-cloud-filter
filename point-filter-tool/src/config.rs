@@ -1,4 +1,4 @@
-use nalgebra_0_32::Isometry3;
+use nalgebra::Isometry3;
 use noisy_float::types::{N32, R32};
 use range_point_filter::FilterProgram;
 use serde::{Deserialize, Serialize};

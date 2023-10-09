@@ -1,6 +1,6 @@
 use crate::config::{self, Config};
 use anyhow::Result;
-use nalgebra_0_32::{coordinates::XYZ, Isometry3, Point3, Vector2};
+use nalgebra::{coordinates::XYZ, Isometry3, Point3, Vector2};
 use range_point_filter::FilterProgram;
 use static_point_filter::StaticPointFilter;
 use std::ops::{Bound, RangeBounds, RangeInclusive};
@@ -54,7 +54,7 @@ impl Filter {
         // Apply range filter
         let iter = if let Some(filter) = &self.range_filter {
             let iter = iter.filter(|pt| {
-                let pt: Point3<f64> = nalgebra_0_32::convert_ref(pt);
+                let pt: Point3<f64> = nalgebra::convert_ref(pt);
                 filter.contains(&pt, None)
             });
             Box::new(iter)
@@ -66,7 +66,7 @@ impl Filter {
         let output_points: Vec<_> = if let Some(filter) = &self.background_filter {
             let points: Vec<_> = iter
                 .filter(|pt| {
-                    let pt: Point3<f64> = nalgebra_0_32::convert_ref(pt);
+                    let pt: Point3<f64> = nalgebra::convert_ref(pt);
                     !filter.check_is_background(&pt)
                 })
                 .collect();

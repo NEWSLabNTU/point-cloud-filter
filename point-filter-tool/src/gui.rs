@@ -1,13 +1,13 @@
 use crate::config::Config;
 use kiss3d::{
     camera::{ArcBall, Camera},
+    nalgebra as na30,
     planar_camera::PlanarCamera,
     post_processing::PostProcessingEffect,
     window::{State, Window},
 };
 use kiss3d_utils::plot::WindowPlotExt as _;
-use nalgebra_0_30 as na30;
-use nalgebra_0_32 as na32;
+use nalgebra as na32;
 
 #[derive(Debug, Clone)]
 pub struct GuiMsg {

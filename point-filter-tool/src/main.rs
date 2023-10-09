@@ -11,7 +11,7 @@ use clap::Parser;
 use filter::Filter;
 use itertools::Itertools;
 use kiss3d::{light::Light, window::Window};
-use nalgebra_0_32 as na;
+use nalgebra as na;
 use pcd_rs::{DataKind, PcdSerialize, WriterInit};
 use std::{fs, path::PathBuf};
 

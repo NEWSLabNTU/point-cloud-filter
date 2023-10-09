@@ -19,14 +19,7 @@ serde = { version = "1.0.152", features = ["derive"] }
 clap = { version = "4.4.1", features = ["derive"] }
 json5 = "0.4.1"
 pcd-rs = {version ="0.10.0",features = ["derive"] }
-
-[dependencies.nalgebra_0-30]
-version = '0.30'
-package = 'nalgebra'
-
-[dependencies.nalgebra_0-32]
-version = '0.32'
-package = 'nalgebra'
+nalgebra = "0.32.3"
 
 [dependencies.kiss3d-utils]
 version = "0.1.0"
