@@ -3,7 +3,7 @@ mod gui;
 use crate::gui::{Gui, GuiMsg};
 use anyhow::Result;
 use clap::Parser;
-use generic_point_filter::{Config, Filter};
+use generic_point_filter::{Config, Filter, Pt32};
 use itertools::Itertools;
 use kiss3d::{light::Light, window::Window};
 use nalgebra as na;
@@ -101,7 +101,9 @@ fn main() -> Result<()> {
             }
         }
 
-        let output_points = filter.process_msg(input_points.clone())?;
+        let output_points: Vec<Pt32> = filter.filter_frame(input_points.iter().map(Pt32::from))?;
+        let output_points: Vec<na::Point3<f32>> =
+            output_points.into_iter().map(|p| p.xyz.into()).collect();
 
         if let Some(gui_tx) = &gui_tx {
             let gui_msg = GuiMsg {

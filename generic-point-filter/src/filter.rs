@@ -1,10 +1,44 @@
 use crate::config::{self, Config};
 use anyhow::Result;
-use nalgebra::{coordinates::XYZ, Isometry3, Point3, Vector2};
+use nalgebra::{coordinates::XYZ, Isometry3, Point3, Scalar, Vector2};
+use num::Float;
 use range_point_filter::FilterProgram;
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use static_point_filter::StaticPointFilter;
 use std::ops::{Bound, RangeBounds, RangeInclusive};
+
+pub type Pt32 = Pt<f32>;
+pub type Pt64 = Pt<f64>;
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct Pt<T> {
+    pub xyz: [T; 3],
+    pub intensity: Option<T>,
+}
+
+impl<T> From<Point3<T>> for Pt<T>
+where
+    T: Scalar,
+{
+    fn from(src: Point3<T>) -> Self {
+        Self {
+            xyz: src.into(),
+            intensity: None,
+        }
+    }
+}
+
+impl<T> From<&Point3<T>> for Pt<T>
+where
+    T: Scalar,
+{
+    fn from(src: &Point3<T>) -> Self {
+        Self {
+            xyz: (*src).clone().into(),
+            intensity: None,
+        }
+    }
+}
 
 #[derive(Debug, Clone)]
 pub struct Filter {
@@ -35,54 +69,73 @@ impl Filter {
         }
     }
 
-    pub fn process_msg(&self, points: Vec<Point3<f32>>) -> Result<Vec<Point3<f32>>> {
-        type BoxIter<'a> = Box<dyn Iterator<Item = Point3<f32>> + Send + 'a>;
+    pub fn contains<T>(&self, point: &Pt<T>) -> bool
+    where
+        T: Float,
+    {
+        macro_rules! ensure {
+            ($cond:expr) => {
+                if !$cond {
+                    return false;
+                }
+            };
+        }
 
-        let iter: BoxIter<'_> = Box::new(points.into_iter());
+        let Pt {
+            xyz: [x, y, z],
+            intensity,
+        } = *point;
+        let p32: Point3<f32> = [
+            num::cast(x).unwrap(),
+            num::cast(y).unwrap(),
+            num::cast(z).unwrap(),
+        ]
+        .into();
+        let p64: Point3<f64> = [
+            num::cast(x).unwrap(),
+            num::cast(y).unwrap(),
+            num::cast(z).unwrap(),
+        ]
+        .into();
 
         // Filter points by the distance to the lidar.
-        let iter: BoxIter = if let Some(filter) = &self.lidar_filter {
-            let iter = iter.filter(move |pt| filter.contains(pt));
-            Box::new(iter)
-        } else {
-            iter
-        };
+        if let Some(filter) = &self.lidar_filter {
+            ensure!(filter.contains(&p32));
+        }
 
         // Ground filter
-        let iter: BoxIter = if let Some(filter) = &self.ground_filter {
-            let iter = iter.filter(move |pt| filter.contains(pt));
-            Box::new(iter)
-        } else {
-            iter
-        };
+        if let Some(filter) = &self.ground_filter {
+            ensure!(filter.contains(&p32));
+        }
 
         // Apply range filter
-        let iter = if let Some(filter) = &self.range_filter {
-            let iter = iter.filter(|pt| {
-                let pt: Point3<f64> = nalgebra::convert_ref(pt);
-                filter.contains(&pt, None)
-            });
-            Box::new(iter)
-        } else {
-            iter
-        };
+        if let Some(filter) = &self.range_filter {
+            ensure!(filter.contains(&p64, intensity.map(|v| num::cast(v).unwrap())));
+        }
 
         // Apply statistical background point filter
-        let output_points: Vec<_> = if let Some(filter) = &self.background_filter {
-            let points: Vec<_> = iter
-                .filter(|pt| {
-                    let pt: Point3<f64> = nalgebra::convert_ref(pt);
-                    !filter.check_is_background(&pt)
-                })
-                .collect();
+        if let Some(filter) = &self.background_filter {
+            ensure!(!filter.check_is_background(&p64));
+        }
 
+        true
+    }
+
+    pub fn step(&self) {
+        // Update background point filter statistics
+        if let Some(filter) = &self.background_filter {
             filter.step();
-            points
-        } else {
-            iter.collect()
-        };
+        }
+    }
 
-        Ok(output_points)
+    pub fn filter_frame<T, I>(&self, frame: I) -> Result<Vec<Pt<T>>>
+    where
+        T: Float,
+        I: IntoIterator<Item = Pt<T>>,
+    {
+        let points: Vec<_> = frame.into_iter().filter(|p| self.contains(p)).collect();
+        self.step();
+        Ok(points)
     }
 }
 

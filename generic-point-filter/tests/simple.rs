@@ -1,5 +1,5 @@
 use anyhow::Result;
-use generic_point_filter::{Config, Filter};
+use generic_point_filter::{Config, Filter, Pt32};
 use itertools::Itertools;
 use nalgebra::Point3;
 use std::fs;
@@ -25,7 +25,7 @@ fn simple_filter_test() -> Result<()> {
         .try_collect()?;
 
     // Run the filter
-    let output_points = filter.process_msg(input_points.clone())?;
+    let output_points = filter.filter_frame(input_points.iter().map(Pt32::from))?;
     assert!(output_points.len() < input_points.len());
 
     Ok(())
