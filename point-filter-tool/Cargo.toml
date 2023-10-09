@@ -1,6 +1,6 @@
 [package]
 name = "point-filter-tool"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 
 [dependencies]
@@ -12,7 +12,7 @@ clap = { version = "4.4.1", features = ["derive"] }
 json5 = "0.4.1"
 pcd-rs = { version ="0.10.0",features = ["derive"] }
 nalgebra = "0.32.3"
-generic-point-filter = { version = "0.1.0", path = "../generic-point-filter", features = ["with-kiss3d"] }
+generic-point-filter = { version = "0.2.0", path = "../generic-point-filter", features = ["with-kiss3d"] }
 
 [dependencies.kiss3d-utils]
 version = "0.1.0"
