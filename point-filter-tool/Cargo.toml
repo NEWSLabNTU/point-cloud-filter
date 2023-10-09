@@ -5,16 +5,14 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.69"
-static-point-filter = { version = "0.1.0", path = "../static-point-filter" }
 flume = "0.10.14"
 itertools = "0.10.5"
 kiss3d = "0.35.0"
-range-point-filter = { version = "0.1.0", path = "../range-point-filter", features = ["with-kiss3d"] }
 clap = { version = "4.4.1", features = ["derive"] }
 json5 = "0.4.1"
 pcd-rs = { version ="0.10.0",features = ["derive"] }
 nalgebra = "0.32.3"
-generic-point-filter = { version = "0.1.0", path = "../generic-point-filter" }
+generic-point-filter = { version = "0.1.0", path = "../generic-point-filter", features = ["with-kiss3d"] }
 
 [dependencies.kiss3d-utils]
 version = "0.1.0"
