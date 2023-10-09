@@ -40,7 +40,6 @@ fn main() -> Result<()> {
     let filter = Filter::new(&config);
 
     fs::create_dir_all(&opts.output_dir)?;
-    // Filter Config file format
 
     let (gui_tx, gui_rx) = if opts.gui {
         let (gui_tx, gui_rx) = flume::bounded(2);
