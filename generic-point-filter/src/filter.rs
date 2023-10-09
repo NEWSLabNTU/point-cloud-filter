@@ -137,6 +137,10 @@ impl Filter {
         self.step();
         Ok(points)
     }
+
+    pub fn config(&self) -> &Config {
+        &self.config
+    }
 }
 
 impl Serialize for Filter {
