@@ -5,6 +5,7 @@ use range_point_filter::FilterProgram;
 use static_point_filter::StaticPointFilter;
 use std::ops::{Bound, RangeBounds, RangeInclusive};
 
+#[derive(Debug)]
 pub struct Filter {
     ground_filter: Option<GroundFilter>,
     lidar_filter: Option<LidarFilter>,
