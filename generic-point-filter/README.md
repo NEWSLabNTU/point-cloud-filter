@@ -1,17 +1,25 @@
-# point-filter-tool
+# generic-point-filter
 
-A command-line tool that applies point filtering on .pcd point cloud
-files.
+This library provides the configuration and construction of a generic
+point filter, which combines ground filter, range filter and
+background filter.
 
 ## Usage
 
-Prepare your .pcd files in one input directory and a configuration
-file. An example configuration file can be found at
-`config/config.json5`. Run this command to invoke this program.
+Add this section to `Cargo.toml` include this library in your Rust
+project.
 
-```sh
-cargo run --release -- \
-    -c config/config.json5 \
-    -i input_dir \
-    -o output_dir
+```toml
+[dependencies.generic-point-filter]
+git = "https://github.com/NEWSLabNTU/point-cloud-filter.git"
+tag = "v0.1.0"
+```
+
+Construct the filter from a .json5 configuration file for example. The
+detailed usage can be found at the [simple example](tests/simple.rs).
+
+```rust
+let text = fs::read_to_string("config.json5")?;
+let config: Config = json5::from_str(&text)?;
+let filter = Filter::new(&config);
 ```
