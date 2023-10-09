@@ -3,32 +3,20 @@ name = "point-filter-tool"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 anyhow = "1.0.69"
 static-point-filter = { version = "0.1.0", path = "../static-point-filter" }
 flume = "0.10.14"
 itertools = "0.10.5"
 kiss3d = "0.35.0"
-log = "0.4.17"
-noisy_float = { version = "0.2.0", features = ["serde"] }
 range-point-filter = { version = "0.1.0", path = "../range-point-filter", features = ["with-kiss3d"] }
-pretty_env_logger = "0.4.0"
-serde = { version = "1.0.152", features = ["derive"] }
 clap = { version = "4.4.1", features = ["derive"] }
 json5 = "0.4.1"
-pcd-rs = {version ="0.10.0",features = ["derive"] }
+pcd-rs = { version ="0.10.0",features = ["derive"] }
 nalgebra = "0.32.3"
+generic-point-filter = { version = "0.1.0", path = "../generic-point-filter" }
 
 [dependencies.kiss3d-utils]
 version = "0.1.0"
 git = "https://github.com/jerry73204/kiss3d-utils.git"
 rev = "v0.1.0"
-
-[dependencies.newslab-serde-nalgebra]
-git = "https://github.com/NEWSLabNTU/newslab-serde.git"
-rev = "v0.1.0"
-
-[dev-dependencies]
-glob = "0.3.1"

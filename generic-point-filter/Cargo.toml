@@ -1,0 +1,23 @@
+[package]
+name = "generic-point-filter"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+anyhow = "1.0.69"
+static-point-filter = { version = "0.1.0", path = "../static-point-filter" }
+itertools = "0.10.5"
+noisy_float = { version = "0.2.0", features = ["serde"] }
+range-point-filter = { version = "0.1.0", path = "../range-point-filter", features = ["with-kiss3d"] }
+serde = { version = "1.0.152", features = ["derive"] }
+nalgebra = "0.32.3"
+
+[dependencies.newslab-serde-nalgebra]
+git = "https://github.com/NEWSLabNTU/newslab-serde.git"
+rev = "v0.1.0"
+
+[dev-dependencies]
+glob = "0.3.1"
+json5 = "0.4.1"

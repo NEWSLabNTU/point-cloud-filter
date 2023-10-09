@@ -1,4 +1,4 @@
-use crate::config::Config;
+use generic_point_filter::Config;
 use kiss3d::{
     camera::{ArcBall, Camera},
     nalgebra as na30,

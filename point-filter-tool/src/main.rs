@@ -1,14 +1,9 @@
-mod config;
-mod filter;
 mod gui;
 
-use crate::{
-    config::Config,
-    gui::{Gui, GuiMsg},
-};
+use crate::gui::{Gui, GuiMsg};
 use anyhow::Result;
 use clap::Parser;
-use filter::Filter;
+use generic_point_filter::{Config, Filter};
 use itertools::Itertools;
 use kiss3d::{light::Light, window::Window};
 use nalgebra as na;
@@ -156,39 +151,3 @@ struct GuiContext {
     window: Window,
     state: Gui,
 }
-
-// fn msg_processor(
-//     pcd_pub: Publisher<PointCloud2>,
-//     filter_rx: flume::Receiver<PointCloud2>,
-//     gui_tx: Option<flume::Sender<GuiMsg>>,
-//     filter: Filter,
-// ) {
-//     while let Ok(in_msg) = filter_rx.recv() {
-//         let out_msg = match filter.process_msg(&in_msg) {
-//             Ok(out_msg) => out_msg,
-//             Err(err) => {
-//                 log_error!(env!("CARGO_BIN_NAME"), "filter error: {err}");
-//                 continue;
-//             }
-//         };
-
-//         let result = pcd_pub.publish(&out_msg);
-//         if let Err(err) = result {
-//             log_error!(env!("CARGO_BIN_NAME"), "publisher error: {err}");
-//             break;
-//         }
-
-//         if let Some(gui_tx) = &gui_tx {
-//             let gui_msg = GuiMsg {
-//                 foreground_points: out_msg.to_na_point_vec().unwrap(),
-//                 background_points: in_msg.to_na_point_vec().unwrap(),
-//             };
-
-//             let result = gui_tx.send(gui_msg);
-//             if let Err(err) = result {
-//                 log_error!(env!("CARGO_BIN_NAME"), "GUI message error: {err}");
-//                 break;
-//             }
-//         }
-//     }
-// }

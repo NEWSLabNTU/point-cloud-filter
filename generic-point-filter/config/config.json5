@@ -1,0 +1,68 @@
+{
+  "ground_filter": {
+      "transform": {
+          "translation": [0.0, 0.0, -1.5], //filter bug
+          "rotation": ["0deg", "0deg", "0deg"]
+      },
+      "max_distance": 50.0
+  },
+  "lidar_filter": {
+      "transform": {
+          "translation": [0.0, 0.0, 0.0],
+          "rotation": ["0deg", "0deg", "0deg"]
+      },
+      "min_distance": 0.5,
+      "max_distance": 50
+  },
+  "range_filter": {
+      // "program": "int * (box1 - box2)",
+      "program": "box1 - box2 + box3",
+      "items": {
+          "box1": {
+              "type": "box",
+              "xy": [0, 10],
+              "wh": [80, 20],
+              "z_min": -1.5,
+              "z_max": 3.0,
+              "azimuth_degrees": 25
+          },
+          "box2": {
+              "type": "box",
+              "xy": [0,0],
+              "wh": [4, 4],
+              "z_min": -2,
+              "z_max": 5,
+              "azimuth_degrees": 0
+          },
+          "box3": {
+            "type": "box",
+            "xy": [-10, 40],
+            "wh": [20, 50],
+            "z_min": -1.5,
+            "z_max": 3.0,
+            "azimuth_degrees": 25
+        },
+          // "int" : {
+          //     "type": "intensity",
+          //     "min": 0.0,
+          //     "max": 1.0
+          // }
+      }
+  },
+  "background_filter": { //occupancy of voxel > threshold -> background
+      "range": {
+          // "x_bound": { "imin": -50, "imax": 50 },
+          // "y_bound": { "imin": -50, "imax": 50 },
+          // "z_bound": { "imin": -50, "imax": 50 }
+          "x_bound": [ -50,  50 ],
+          "y_bound": [ -50,  50 ],
+          "z_bound": [ -50,  50 ]
+      },
+      "voxel_size": {
+          "x_size": 0.5,
+          "y_size": 0.5,
+          "z_size": 0.5
+      },
+      "background_threshold": 0.5
+  }
+}
