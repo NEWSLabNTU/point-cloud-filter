@@ -1,7 +1,0 @@
-{
-    "filter_config":"./config/filter.json5",
-    "lidar_tf":"./config/lidar_tf.json5",
-    "ground_tf":"./config/ground_tf.json5",
-    "data_path":"/home/philly12399/philly_data/0825mini10/wayside3",
-    "output_path":"./output/"
-}
