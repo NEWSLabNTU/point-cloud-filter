@@ -2,15 +2,17 @@ use crate::config::{self, Config};
 use anyhow::Result;
 use nalgebra::{coordinates::XYZ, Isometry3, Point3, Vector2};
 use range_point_filter::FilterProgram;
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use static_point_filter::StaticPointFilter;
 use std::ops::{Bound, RangeBounds, RangeInclusive};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Filter {
     ground_filter: Option<GroundFilter>,
     lidar_filter: Option<LidarFilter>,
     range_filter: Option<FilterProgram>,
     background_filter: Option<StaticPointFilter>,
+    config: Config,
 }
 
 impl Filter {
@@ -23,11 +25,13 @@ impl Filter {
         } = config;
         let lidar_filter = lidar_filter.as_ref().map(LidarFilter::new);
         let ground_filter = ground_filter.as_ref().map(GroundFilter::new);
+
         Self {
             ground_filter,
             lidar_filter,
             range_filter: range_filter.clone(),
             background_filter: background_filter.clone(),
+            config: config.clone(),
         }
     }
 
@@ -82,7 +86,27 @@ impl Filter {
     }
 }
 
-#[derive(Debug)]
+impl Serialize for Filter {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        self.config.serialize(serializer)
+    }
+}
+
+impl<'de> Deserialize<'de> for Filter {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let config = Config::deserialize(deserializer)?;
+        let filter = Self::new(&config);
+        Ok(filter)
+    }
+}
+
+#[derive(Debug, Clone)]
 struct LidarFilter {
     transform: Isometry3<f32>,
     range: (Bound<f32>, Bound<f32>),
@@ -115,7 +139,7 @@ impl LidarFilter {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct GroundFilter {
     transform: Isometry3<f32>,
     range: RangeInclusive<f32>,
