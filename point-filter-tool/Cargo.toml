@@ -16,5 +16,5 @@ generic-point-filter = { version = "0.3.0", path = "../generic-point-filter", fe
 
 [dependencies.kiss3d-utils]
 version = "0.1.0"
-git = "https://github.com/jerry73204/kiss3d-utils.git"
+git = "https://github.com/NEWSLabNTU/kiss3d-utils.git"
 rev = "v0.1.0"
