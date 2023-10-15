@@ -1,6 +1,6 @@
 [package]
 name = "range-point-filter"
-version = "0.1.0"
+version = "0.3.1"
 edition = "2021"
 authors = ['Lin Hsiang-Jui <jerry73204@gmail.com>']
 
@@ -14,7 +14,7 @@ log = { version = "0.4.17", optional = true }
 noisy_float = { version = "0.2.0", features = ["serde"] }
 serde = { version = "1.0.152", features = ["derive"] }
 anyhow = "1.0.75"
-filter-expr = { version = "0.1.0", path = "../filter-expr" }
+filter-expr = { version = "0.3.1", path = "../filter-expr" }
 itertools = "0.11.0"
 # common-types = { version = "0.1.0", path = "../common-types" }
 
