@@ -1,8 +1,8 @@
-
 [package]
 name = "range-point-filter"
 version = "0.1.0"
 edition = "2021"
+authors = ['Lin Hsiang-Jui <jerry73204@gmail.com>']
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

@@ -2,6 +2,7 @@
 name = "point-filter-tool"
 version = "0.3.0"
 edition = "2021"
+authors = ['philly12399 <philly12399@gmail.com>', 'Lin Hsiang-Jui <jerry73204@gmail.com>']
 
 [dependencies]
 anyhow = "1.0.69"
