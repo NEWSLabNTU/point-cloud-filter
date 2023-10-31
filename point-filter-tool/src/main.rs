@@ -132,7 +132,7 @@ fn main() -> Result<()> {
             width: output_points.len() as u64,
             height: 1,
             viewpoint: Default::default(),
-            data_kind: DataKind::Binary,
+            data_kind: DataKind::Ascii,
             schema: None,
         }
         .create(output_path)?;
