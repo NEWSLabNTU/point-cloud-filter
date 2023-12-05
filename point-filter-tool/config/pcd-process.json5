@@ -1,0 +1,222 @@
+{
+    "version": "0.3.0",
+    "enable_gui": true,
+    "dataflow": "dataflow.json5",
+    "infra": "../params.json",
+    "major_device": "wayside_1.lidar1",
+    "filter": {
+        "ground_filter_range": 100.0,
+        "lidar_distance_bound": { "imin": 1.0, "imax": 80.0 },
+        // "background_point_filter": {
+        //     "range": {
+        //         "x_bound": { "imin": -50, "imax": 50 },
+        //         "y_bound": { "imin": -50, "imax": 50 },
+        //         "z_bound": { "imin": -50, "imax": 50 },
+        //     },
+        //     "voxel_size": {
+        //         "x_size": 0.2,
+        //         "y_size": 0.2,
+        //         "z_size": 0.2,
+        //     },
+        //     "background_threshold": 0.6,
+        // },
+        "rules": {
+            "type": "all",
+            "filters": [
+                {
+                    "type": "any",
+                    "filters": [
+                        // intersection
+                        {
+                            "type": "planar_box",
+                            "z_bound": { "imin": -3.0, "imax": 2.8 },
+                            "size_x": 46.0,
+                            "size_y": 36.0,
+                            "center_x": 24.0,
+                            "center_y": -6.0,
+                            "azimuth_degrees": 1.5,
+                        },
+                        // intersection 2
+                        {
+                            "type": "planar_box",
+                            "z_bound": { "imin": -3.0, "imax": 2.8 },
+                            "size_x": 32.0,
+                            "size_y": 5.0,
+                            "center_x": 25.5,
+                            "center_y": 13.0,
+                            "azimuth_degrees": 0,
+                        },
+                        // 清進路
+                        // {
+                        //     "type": "planar_box",
+                        //     "z_bound": { "imin": -3.0, "imax": 2.8 },
+                        //     "size_x": 30.0,
+                        //     "size_y": 6.0,
+                        //     "center_x": 35.0,
+                        //     "center_y": 15,
+                        //     "azimuth_degrees": 28,
+                        // },
+                        // slow lane
+                        {
+                            "type": "planar_box",
+                            "z_bound": { "imin": -3.0, "imax": 2.8 },
+                            "size_x": 40.0,
+                            "size_y": 5.0,
+                            "center_x": 60.0,
+                            "center_y": 9.5,
+                            "azimuth_degrees": 1.5,
+                        },
+                        // fast lane
+                        {
+                            "type": "planar_box",
+                            "z_bound": { "imin": -3.0, "imax": 2.8 },
+                            "size_x": 40.0,
+                            "size_y": 26,
+                            "center_x": 60.0,
+                            "center_y": -7,
+                            "azimuth_degrees": 0,
+                        },
+                        // slow lane 2
+                        {
+                            "type": "planar_box",
+                            "z_bound": { "imin": -3.0, "imax": 2.8 },
+                            "size_x": 30.0,
+                            "size_y": 10.0,
+                            "center_x": -5.0,
+                            "center_y": 7.0,
+                            "azimuth_degrees": 1.5,
+                        },
+                        // fast lane 2
+                        {
+                            "type": "planar_box",
+                            "z_bound": { "imin": -3.0, "imax": 2.8 },
+                            "size_x": 30.0,
+                            "size_y": 20.0,
+                            "center_x": -3.0,
+                            "center_y": -6.0,
+                            "azimuth_degrees": 10,
+                        },
+                        // fast lane 3
+                        {
+                            "type": "planar_box",
+                            "z_bound": { "imin": -3.0, "imax": 2.8 },
+                            "size_x": 60.0,
+                            "size_y": 16.0,
+                            "center_x": 10.0,
+                            "center_y": -20.0,
+                            "azimuth_degrees": 12,
+                        },
+                    ]
+                },
+                {
+                    "type": "not",
+                    "filter": {
+                        "type": "any",
+                        "filters": [
+                            // island 1
+                            {
+                                "type": "planar_box",
+                                "z_bound": { "imin": -3.0, "imax": 2.8 },
+                                "size_x": 35.0,
+                                "size_y": 2,
+                                "center_x": -5.5,
+                                "center_y": -12.0,
+                                "azimuth_degrees": 13,
+                            },
+                            // island 2
+                            {
+                                "type": "planar_box",
+                                "z_bound": { "imin": -3.0, "imax": 2.8 },
+                                "size_x": 26.0,
+                                "size_y": 2,
+                                "center_x": -11.0,
+                                "center_y": 0.0,
+                                "azimuth_degrees": 0,
+                            },
+                            // island 3
+                            {
+                                "type": "planar_box",
+                                "z_bound": { "imin": -3.0, "imax": 2.8 },
+                                "size_x": 10.0,
+                                "size_y": 3,
+                                "center_x": -15.0,
+                                "center_y": -2.0,
+                                "azimuth_degrees": 12,
+                            },
+                            // island 4
+                            {
+                                "type": "planar_box",
+                                "z_bound": { "imin": -3.0, "imax": 2.8 },
+                                "size_x": 40.0,
+                                "size_y": 2,
+                                "center_x": 65,
+                                "center_y": -4.0,
+                                "azimuth_degrees": 1.5,
+                            },
+                            // island 5
+                            {
+                                "type": "planar_box",
+                                "z_bound": { "imin": -3.0, "imax": 2.8 },
+                                "size_x": 3.0,
+                                "size_y": 1.0,
+                                "center_x": -20,
+                                "center_y": 1.0,
+                                "azimuth_degrees": -15.5,
+                            },
+                            // border 1
+                            {
+                                "type": "planar_box",
+                                "z_bound": { "imin": -3.0, "imax": 2.8 },
+                                "size_x": 8.0,
+                                "size_y": 5,
+                                "center_x": 44.0,
+                                "center_y": -23.0,
+                                "azimuth_degrees": 0,
+                            },
+                            // border 2
+                            {
+                                "type": "planar_box",
+                                "z_bound": { "imin": -3.0, "imax": 2.8 },
+                                "size_x": 2.0,
+                                "size_y": 2.0,
+                                "center_x": 20.0,
+                                "center_y": -25.5,
+                                "azimuth_degrees": 45.0,
+                            },
+                            // border 3
+                            {
+                                "type": "planar_box",
+                                "z_bound": { "imin": -3.0, "imax": 2.8 },
+                                "size_x": 15.0,
+                                "size_y": 2.0,
+                                "center_x": 10.0,
+                                "center_y": -27.6,
+                                "azimuth_degrees": 10.0,
+                            },
+                            // border 4
+                            {
+                                "type": "planar_box",
+                                "z_bound": { "imin": -3.0, "imax": 2.8 },
+                                "size_x": 2.5,
+                                "size_y": 2.0,
+                                "center_x": 18.0,
+                                "center_y": -26.6,
+                                "azimuth_degrees": 10.0,
+                            },
+                            // tree
+                            {
+                                "type": "planar_box",
+                                "z_bound": { "imin": -3.0, "imax": 2.8 },
+                                "size_x": 6,
+                                "size_y": 3.5,
+                                "center_x": 44.0,
+                                "center_y": 13.5,
+                                "azimuth_degrees": 0,
+                            },
+                        ],
+                    }
+                },
+            ],
+        }
+    }
+}

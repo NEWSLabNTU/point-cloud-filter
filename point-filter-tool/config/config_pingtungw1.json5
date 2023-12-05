@@ -1,0 +1,195 @@
+{
+  "ground_filter": {
+      "transform": {
+          "translation": [0.0, 0.0, -1.5], //ground coordinate  
+          "rotation": ["0deg", "0deg", "0deg"]
+      },
+      "max_distance": 100.0
+  },
+  "lidar_filter": {
+      "transform": {
+          "translation": [0.0, 0.0, 0.0],
+          "rotation": ["0deg", "0deg", "0deg"]
+      },
+      "min_distance": 1.0,
+      "max_distance": 80.0
+  },
+  "range_filter": {
+      // "program": "int * (box1 - box2)",
+      "program": "(int1+int2+sl1+sl2+fl1+fl2+fl3)-(is1+is2+is3+is4+is5+bo1+bo2+bo3+bo4+tr1)", //customize
+      "items": {
+        // ###saved###
+        //intersection
+          "int1": {
+              "type": "box",
+              "xy": [24.0, -6.0],
+              "wh": [46.0, 36.0],
+              "z_min": -3.0,
+              "z_max": 2.8,
+              "azimuth_degrees": 1.5
+          },
+          //intersection 2
+          "int2": {
+            "type": "box",
+            "xy": [25.5, 13.0],
+            "wh": [32.0, 5.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 0
+        },
+        // slow lane
+        "sl1": {
+            "type": "box",
+            "xy": [60.0, 9.5],
+            "wh": [40.0, 5.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 1.5
+        },
+        // fast lane
+        "fl1": {
+            "type": "box",
+            "xy": [60.0, -7.0],
+            "wh": [40.0, 26.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 0
+        },
+        // slow lane2
+        "sl2": {
+            "type": "box",
+            "xy": [-5.0, 7.0],
+            "wh": [30.0, 10.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 1.5
+        },
+        // fast lane2
+        "fl2": {
+            "type": "box",
+            "xy": [-3.0, -6.0],
+            "wh": [30.0, 20.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 10
+        },
+        // fast lane3
+        "fl3": {
+            "type": "box",
+            "xy": [10.0, -20.0],
+            "wh": [60.0, 16.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 12
+        },
+        // ####filted####
+        // island 1
+        "is1": {
+            "type": "box",
+            "xy": [-5.5, -12.0],
+            "wh": [35.0, 2.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 13
+        },
+        // island 2
+        "is2": {
+            "type": "box",
+            "xy": [-11.0, 0.0],
+            "wh": [26.0, 2.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 0
+        },
+        // island 3
+        "is3": {
+            "type": "box",
+            "xy": [-15.0, -2.0],
+            "wh": [10.0, 3.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 12
+        },
+        // island 4
+        "is4": {
+            "type": "box",
+            "xy": [65.0, -4.0],
+            "wh": [40.0, 2.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 1.5
+        },
+        // island 5
+        "is5": {
+            "type": "box",
+            "xy": [-20.0, 1.0],
+            "wh": [3.0, 1.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": -15.5
+        },
+        // border 1
+        "bo1": {
+            "type": "box",
+            "xy": [44.0, -23.0],
+            "wh": [8.0, 5.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 0
+        },
+        // border 2
+        "bo2": {
+            "type": "box",
+            "xy": [20.0, -25.5],
+            "wh": [2.0, 2.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 45.0
+        },
+        // border 3
+        "bo3": {
+            "type": "box",
+            "xy": [10.0, -27.6],
+            "wh": [15.0, 2.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 10.0
+        },
+        // border 4
+        "bo4": {
+            "type": "box",
+            "xy": [18.0, -26.6],
+            "wh": [2.5, 2.0],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 10.0
+        },
+        // tree1
+        "tr1": {
+            "type": "box",
+            "xy": [44.0, 13.5],
+            "wh": [6.0, 3.5],
+            "z_min": -3.0,
+            "z_max": 2.8,
+            "azimuth_degrees": 0.0
+        },
+        
+      }
+  },
+//   "background_filter": {  //occupancy of voxel > threshold -> background
+//       "range": {
+//           // "x_bound": { "imin": -50, "imax": 50 },
+//           // "y_bound": { "imin": -50, "imax": 50 },
+//           // "z_bound": { "imin": -50, "imax": 50 }
+//           "x_bound": [ -50,  50 ],
+//           "y_bound": [ -50,  50 ],
+//           "z_bound": [ -50,  50 ]
+//       },
+//       "voxel_size": {
+//           "x_size": 0.5,
+//           "y_size": 0.5,
+//           "z_size": 0.5
+//       },
+//       "background_threshold": 0.5
+//   }
+}
