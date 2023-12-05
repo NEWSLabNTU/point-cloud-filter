@@ -17,6 +17,6 @@ cargo run --release -- \
     --gui
 ```
 
-建置config range_filter中的program的時候 最好寫成(Σsaved)-(Σfiltered) 用太多負號會爆炸
-ex:"program": "(int1+int2+sl1+sl2+fl1+fl2+fl3)-(is1+is2+is3+is4+is5+bo1+bo2+bo3+bo4+tr1)" OK
-"program": "int1+int2+sl1+sl2+fl1+fl2+fl3-is1-is2-is3-is4-is5-bo1-bo2-bo3-bo4-tr1" BOOM
+建置config range_filter中的program的時候 最好寫成(Σsaved)-(Σfiltered) 用太多負號會爆炸  
+ex:"program": "(int1+int2+sl1+sl2+fl1+fl2+fl3)-(is1+is2+is3+is4+is5+bo1+bo2+bo3+bo4+tr1)" OK  
+"program": "int1+int2+sl1+sl2+fl1+fl2+fl3-is1-is2-is3-is4-is5-bo1-bo2-bo3-bo4-tr1" BOOM  
